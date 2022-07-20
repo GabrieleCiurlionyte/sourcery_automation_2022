@@ -42,7 +42,7 @@ const config = {
     trace: 'on-first-retry',
     headless: false,
     launchOptions: {
-      slowMo: 50,
+      slowMo: 5,
     },
   },
 
