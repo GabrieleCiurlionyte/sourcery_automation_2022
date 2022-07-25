@@ -47,12 +47,14 @@ data.forEach(version => {
     checkClearButton(version);
   })
 
+  
+  
   //Only field integer toggle test
   test.describe(`${version}: "Only integer" error`, () => {
     onlyIntegerTest(version);
   });
   
-
+  
   //Calculations test
   actionLabel.forEach( label =>{
 
@@ -102,6 +104,8 @@ function onlyIntegerTest(version){
           await page.locator('#number2Field').type('b');
           await page.selectOption('#selectOperationDropdown', {label: actionLabel[i]});
           await page.locator('#calculateButton').click();
+
+          await page.locator('text=Number 1 is not a number');
           //Check if error message not empty
 
           //Does not work by label text
@@ -115,7 +119,7 @@ function onlyIntegerTest(version){
           //Thorws error: expected to fail but passed
           /*
           const errorText = page.locator('#errorMsgField').inputValue;
-          if(String(errorText).match('not a number') == null){ //if no matching char found
+          if(String(errorText).match('not a number') === null){ //if no matching char found
             console.log("Error messages found!\n");
             test.fail();
           }
@@ -133,9 +137,17 @@ function onlyIntegerTest(version){
 
         //Check if marked
         const state = await page.locator('#integerSelect').isChecked();
+
+        //If not checked
         if(!state){
-          test.fail();
+          //check
+          await page.locator('#integerSelect').check();
         }
+
+        //Uncheck
+        await page.locator('#integerSelect').uncheck();
+
+
       }
     })
 
@@ -155,6 +167,8 @@ function onlyIntegerTest(version){
 
     //Checks if enabled
     const buttonState = await page.locator('#clearButton').isDisabled();
+    
+    //Incorrect message propts
     if(buttonState){
       test.fail();
     }
